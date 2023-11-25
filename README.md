@@ -1,4 +1,4 @@
-# Muliplayer Game using Scala REST API - Akka HTTP
+# Policeman and Thief Game using Scala REST API - Akka HTTP
 Implemented a RESTful Service using Akka HTTP in Scala
 
 ### Author: Vasu Garg
@@ -85,6 +85,68 @@ The project comprises the following key packages:
 - **Message Passing**: The actors communicate asynchronously through message passing, which dictates the flow of the game. Messages such as Move, GetPosition, and GetAllowedMoves are defined to facilitate this interaction, and the actors respond to these messages with actions or further messages.
 
 - **Game Logic**: Actors make decisions based on the game logic implemented within their message-handling behavior. For example, the Move message will check if the move is valid, and if not, the actor can respond with an error or a game-over status.
+
+## Game Overview
+The Policeman and Thief game is a strategic, turn-based game where one player is the Policeman and the other is the Thief. Set in a graph representing a city network, the aim is for the Policeman to catch the Thief, while the Thief tries to evade capture and reach a node containing valuable data.
+
+## Players
+- **Policeman**: Aims to catch the Thief.
+- **Thief**: Attempts to evade the Policeman and reach a valuable node.
+
+## Game Setup
+1. **Graph Initialization**: Played on a directed graph with nodes possibly containing valuable data.
+2. **Player Positioning**: Players are randomly placed on different nodes at the start, with the Thief not starting on a valuable node.
+
+## Turn Mechanics
+- Players alternate turns.
+- Each player can move to an adjacent node on their turn.
+
+## Moves
+- **Valid Move**: Moving to an adjacent node.
+- **Invalid Move**: 
+  - Moving to a non-adjacent node.
+  - Moving to a non-existent node.
+  - Policeman's invalid move results in Thief's win, and vice versa.
+
+## Winning Conditions
+- **Policeman Wins**: Catches the Thief by moving to the same node.
+- **Thief Wins**: Reaches a node with valuable data or if Policeman makes an invalid move.
+
+## Game Progression
+- Players strategize by checking the graph and information on adjacent nodes.
+- The game provides adjacent node details and confidence scores in a perturbed graph scenario.
+
+## API Routes
+
+#### Starting the Game
+- **POST /game/start**
+  - This endpoint starts a new game session.
+  - It initializes the graph, places the Policeman and Thief on random nodes, and sets the game state.
+
+#### Making a Move
+- **POST /game/move/{playerType}/{nodeId}**
+  - Allows a player (either Policeman or Thief) to move to an adjacent node.
+  - `{playerType}` should be either `policeman` or `thief`.
+  - `{nodeId}` is the ID of the destination node.
+  - Returns success or failure based on move validity.
+
+#### Checking Game Status
+- **GET /game/status**
+  - Retrieves the current status of the game.
+  - Indicates if the game is in progress, if one of the players has won, and the current positions of the Policeman and Thief.
+
+#### Retrieving Allowed Moves
+- **GET /game/{playerType}/allowedMoves**
+  - Provides the list of adjacent nodes a player can move to from their current position.
+  - `{playerType}` should be either `policeman` or `thief`.
+  - Also returns confidence scores for each move in a perturbed graph scenario.
+
+#### Notes
+- The server listens on `http://localhost:8081`.
+- All routes are accessible via HTTP methods as specified.
+
+
+
 
 
 ## Conclusion
