@@ -53,6 +53,9 @@ https://www.jetbrains.com/help/idea/import-project-or-module-wizard.html#open-pr
 - **`perturbedGraphFilePath`**
   - **Purpose:** Specifies the filepath for the perturbed graph on which we will perform the random walks.
 
+- **`strategy`**
+  - **Purpose:** Specifies the strategy the user wants to implement for moving the players at client side.
+    
 - **Paths and Directories:**
   - Note that certain settings specify directory paths relative to the project's root directory.
   - For example, if `originalGraphFilePath` is set to `"inputs"`, it refers to the `inputs` directory within the project's root directory.
