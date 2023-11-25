@@ -8,7 +8,7 @@ Implemented a RESTful Service using Akka HTTP in Scala
 
 This project contains a Scala REST application that uses the Akka HTTP's Actor Model to design the server side implementation of the application and Client side which runs the Game automatically.
 
-Video Link: 
+Video Link: https://youtu.be/E3JgyEFNUb8
 The video explains deployment of the REST application in AWS as a mincroservice using AWS ECR and ECS.
 
 ## Prerequisites
