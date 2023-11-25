@@ -60,12 +60,21 @@ https://www.jetbrains.com/help/idea/import-project-or-module-wizard.html#open-pr
   - In order to run the program on different graphs, you can clone NetGameSime and call Main class to generate new graphs and making the relevant changes to application.conf post that.
 
 5) Running project via SBT Run.
+Open the sbt shell   
 ```
-sbt run
+sbt
+```
+Bring up the server by executing:
+```
+run
 ```
 6) (Optional) The application can be run as a docker container
+Install and open Docker Desktop
+Run the following command in the directory where the Dockerfile is present
 ```
+docker build 
 ```
+Run the docker image from the Docker Desktop
 
 ## Project Structure
 
@@ -142,15 +151,25 @@ The Policeman and Thief game is a strategic, turn-based game where one player is
   - Also returns confidence scores for each move in a perturbed graph scenario.
 
 #### Notes
-- The server listens on `http://localhost:8081`.
+- The server listens on `http://localhost:8080`.
 - All routes are accessible via HTTP methods as specified.
 
+## Automated Play
 
+- **Client Side**: The project also contains an automated playing option which has preconfigured rules and steps that helps the player make moves for both Policeman and Thief based upo defined strategies.
 
+- **Strategies**: The GameClient code contains options of choosing from different strategies which can be defined under the applicatio.conf. Based on these strategies the Player actors will make their next move.
 
+- **Output**: Application output on the client side looks like below:
+```
+06:04:55.737 [GameClientSystem-akka.actor.default-dispatcher-5] INFO  - Slf4jLogger started
+06:04:56.390 [GameClientSystem-akka.actor.default-dispatcher-5] INFO  - Initial Game Status: Game in progress | Policeman at Node: 7, Thief at Node: 4
+06:04:56.408 [GameClientSystem-akka.actor.default-dispatcher-8] INFO  - Game Status: Game in progress | Policeman at Node: 7, Thief at Node: 4
+06:04:56.415 [GameClientSystem-akka.actor.default-dispatcher-5] INFO  -  Game Status: Thief Wins! | Policeman at Node: 7, Thief at Node: 10
+```
 
 ## Conclusion
 
 This project demonstrates the use of Akka HTTP in designing a REST API and deploying it as a microservice using Scala and AWS.
 
-**Note:** This README provides an overview of the project. For detailed documentation and instructions, refer to the project's youtube video link and src files.
+**Note:** This README provides an overview of the project. For detailed documentation and AWS deployment instruction, refer to the project's youtube video link and src files.
