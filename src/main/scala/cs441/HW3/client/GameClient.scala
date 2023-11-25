@@ -4,6 +4,7 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.unmarshalling.{Unmarshal, Unmarshaller}
+import com.typesafe.config.{Config, ConfigFactory}
 import cs441.HW3.Utilz.CreateLogger
 import org.slf4j.Logger
 import spray.json._
@@ -71,7 +72,9 @@ object GameClient extends App {
   implicit val executionContext: ExecutionContext = system.dispatcher
   import JsonFormats._
 
-  private val serverUrl = "http://localhost:8081"
+  private val serverUrl = "http://localhost:8080"
+  private val config: Config = ConfigFactory.load("application.conf")
+  private val strategy = config.getString("GraphPTGame.game.strategy")
 
   def startGame(): Future[String] = {
     val responseFuture = Http().singleRequest(HttpRequest(method = HttpMethods.POST, uri = s"$serverUrl/game/start"))
@@ -93,8 +96,24 @@ object GameClient extends App {
     responseFuture.flatMap(res => Unmarshal(res.entity).to[String])
   }
 
-  private def chooseRandomMove(moves: Set[Node]): Int = {
+  private def maxScoreMove(allowedMovesResponse: AllowedMovesResponse): Int = {
+    val maxScore = allowedMovesResponse.scores.values.max
+    val bestMoveNodes = allowedMovesResponse.scores.collect {
+      case (nodeId, score) if score == maxScore => allowedMovesResponse.allowedMoves.find(_.id == nodeId.toInt).get
+    }.toSet
+    randomChoiceMove(bestMoveNodes)
+  }
+
+  private def randomChoiceMove(moves: Set[Node]): Int = {
     Random.shuffle(moves.toList).headOption.map(_.id).getOrElse(-1)
+  }
+
+  private def chooseMove(allowedMovesResponse: AllowedMovesResponse): Int = {
+    strategy match {
+      case "1" => randomChoiceMove(allowedMovesResponse.allowedMoves)
+      case "2" => maxScoreMove(allowedMovesResponse)
+      case _ => throw new IllegalArgumentException(s"Unknown strategy: $strategy")
+    }
   }
 
   private def gameLoop(): Future[Unit] = {
@@ -102,12 +121,12 @@ object GameClient extends App {
       statusResponseBeforeMove <- getGameStatus
       _ = logger.info(s"Initial $statusResponseBeforeMove")
       policemanMoves <- getAllowedMoves("policeman")
-      chosenPolicemanMove = chooseRandomMove(policemanMoves.allowedMoves)
+      chosenPolicemanMove = chooseMove(policemanMoves)
       _ <- makeMove("policeman", chosenPolicemanMove)
       statusResponseAfterPolicemanMove <- getGameStatus
       _ = logger.info(s"$statusResponseAfterPolicemanMove")
       thiefMoves <- getAllowedMoves("thief")
-      chosenThiefMove = chooseRandomMove(thiefMoves.allowedMoves)
+      chosenThiefMove = chooseMove(thiefMoves)
       _ <- makeMove("thief", chosenThiefMove)
       statusResponseAfterThiefMove <- getGameStatus
       _ = logger.info(s" $statusResponseAfterThiefMove")

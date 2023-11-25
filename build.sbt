@@ -33,14 +33,14 @@ libraryDependencies ++= {
     "com.typesafe.akka" %% "akka-actor-typed" % akkaV,
     "de.heikoseeberger" %% "akka-http-circe" % akkaHttpCirceV,
     "com.typesafe.akka" %% "akka-testkit" % akkaV,
-    "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpV % "test",
+    "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpV % Test,
     "com.typesafe.akka" %% "akka-stream-testkit" % "2.6.20" % Test,
+    "com.typesafe.akka" %% "akka-actor-testkit-typed" % "2.6.20" % Test,
     "io.spray" %% "spray-json" % "1.3.6",
     "com.typesafe.akka" %% "akka-http-spray-json" % "10.2.10",
     "ch.qos.logback" % "logback-classic" % "1.2.3",
-    //"org.slf4j" % "slf4j-api" % "1.7.30"
     "ch.qos.logback" % "logback-classic" % logbackVersion,
-    //"org.slf4j" % "slf4j-api" % "2.0.5"
+    "org.scalaj" %% "scalaj-http" % "2.4.2"
   )
 }
 

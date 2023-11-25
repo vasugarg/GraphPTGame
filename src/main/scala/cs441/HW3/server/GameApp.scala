@@ -26,7 +26,7 @@ object GameApp extends App {
   private def startHttpServer(routes: Route)(implicit system: ActorSystem[_]): Unit = {
     implicit val executionContext: ExecutionContext = system.executionContext
 
-    val futureBinding = Http().newServerAt("0.0.0.0", 8081).bind(routes)
+    val futureBinding = Http().newServerAt("0.0.0.0", 8080).bind(routes)
     futureBinding.onComplete {
       case Success(binding) =>
         val address = binding.localAddress

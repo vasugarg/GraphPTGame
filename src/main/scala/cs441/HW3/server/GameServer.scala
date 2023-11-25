@@ -154,8 +154,8 @@ class GameServer(system: ActorSystem[_],
   }
 
   private def startGame(): Future[String] = {
-    val originalGraphPath = sys.env.getOrElse("ORIGINAL_GRAPH_PATH", config.getString("akkaTutorial.FilePathsLocal.originalGraphPath"))
-    val perturbedGraphPath = sys.env.getOrElse("PERTURBED_GRAPH_PATH",config.getString("akkaTutorial.FilePathsLocal.perturbedGraphPath"))
+    val originalGraphPath = sys.env.getOrElse("ORIGINAL_GRAPH_PATH", config.getString("GraphPTGame.FilePathsLocal.originalGraphPath"))
+    val perturbedGraphPath = sys.env.getOrElse("PERTURBED_GRAPH_PATH",config.getString("GraphPTGame.FilePathsLocal.perturbedGraphPath"))
     val originalGraph = Graph.loadGraph(originalGraphPath)
     val perturbedGraph = Graph.loadGraph(perturbedGraphPath)
 

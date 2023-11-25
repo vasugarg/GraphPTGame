@@ -57,7 +57,7 @@ object GameManager {
     }
   }
 
-  private def getRandomNode(graph: MutableValueGraph[Node, Edge]): Node = {
+  def getRandomNode(graph: MutableValueGraph[Node, Edge]): Node = {
     val nodes = graph.nodes().asScala.toSeq
     nodes(Random.nextInt(nodes.size))
   }
